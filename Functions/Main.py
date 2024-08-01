@@ -1,57 +1,38 @@
-from function import load_data, clean_data, merge_data, compute_chi_square, compute_mannwhitneyu, compute_ttest, z_test_for_proportions
-from eda import plot_age_distribution, plot_gender_distribution, plot_tenure_distribution, plot_logins, plot_calls
+# main.py
 
-# File paths
-file_path_demo = 'Raw/df_final_demo.txt'
-file_path_experiment = 'Raw/df_final_experiment_clients.txt'
-file_path_combined = 'Raw/df_combined.txt'
+from data_processing import load_data, clean_data, convert_to_numeric, remove_outliers
+from eda import summarize_data, calculate_distributions
+from metrics import calculate_completion_rate, calculate_error_rate
+from hypothesis_testing import chi_square_test, mann_whitney_u_test, z_test
+from visualization import plot_histogram, plot_boxplot
+from models import train_logistic_regression
+import config.settings as settings
 
 # Load data
-df_final_demo = load_data(file_path_demo)
-df_final_experiment_clients = load_data(file_path_experiment)
-df_combined = load_data(file_path_combined)
+df = load_data(settings.DATA_PATH)
 
 # Clean data
-df_final_demo = clean_data(df_final_demo)
-df_final_experiment_clients = clean_data(df_final_experiment_clients)
-df_combined = clean_data(df_combined)
-
-# Merge data
-Clean_Data = merge_data(df_final_demo, df_final_experiment_clients, df_combined)
-Clean_Data.to_csv('Clean_Data.csv', index=False)
+df = clean_data(df)
+df = convert_to_numeric(df, ['clnt_age', 'num_accts', 'bal', 'calls_6_mnth', 'logons_6_mnth'])
+df = remove_outliers(df, 'bal')
 
 # EDA
-plot_age_distribution(Clean_Data)
-plot_gender_distribution(Clean_Data)
-plot_tenure_distribution(Clean_Data)
-plot_logins(Clean_Data)
-plot_calls(Clean_Data)
+summarize_data(df)
+calculate_distributions(df, 'gendr')
 
-# Hypothesis Testing
-# Completion Rate
-chi2, p_value = compute_chi_square(Clean_Data, 'variation', 'process_step')
-print(f"Chi-square test: chi2 = {chi2}, p = {p_value}")
+# Metrics
+completion_rate = calculate_completion_rate(df)
+error_rate = calculate_error_rate(df)
 
-# Dwell Time
-control_dwell_time = Clean_Data[Clean_Data['variation'] == 'Control']['dwell_time']
-test_dwell_time = Clean_Data[Clean_Data['variation'] == 'Test']['dwell_time']
-u_stat, p_value = compute_mannwhitneyu(control_dwell_time, test_dwell_time)
-print(f"Mann-Whitney U test: U = {u_stat}, p = {p_value}")
+# Hypothesis testing
+control_group = df[df['variation'] == 'Control']
+test_group = df[df['variation'] == 'Test']
+observed = [[control_group.shape[0], test_group.shape[0]]]
+chi2, p_value, dof, expected = chi_square_test(observed)
 
-# Error Rates
-chi2_errors, p_value_errors = compute_chi_square(Clean_Data, 'variation', 'process_step')
-print(f"Error Rates Chi-square test: chi2 = {chi2_errors}, p = {p_value_errors}")
+# Visualization
+plot_histogram(df, 'clnt_age', 'Age Distribution')
+plot_boxplot(df, 'gendr', 'clnt_tenure_yr', 'Tenure by Gender')
 
-# Completion Rate with Cost-Effectiveness Threshold
-control_success = Clean_Data[(Clean_Data['variation'] == 'Control') & (Clean_Data['process_step'] == 'confirm')].shape[0]
-control_total = Clean_Data[Clean_Data['variation'] == 'Control'].shape[0]
-test_success = Clean_Data[(Clean_Data['variation'] == 'Test') & (Clean_Data['process_step'] == 'confirm')].shape[0]
-test_total = Clean_Data[Clean_Data['variation'] == 'Test'].shape[0]
-z_score, p_value = z_test_for_proportions(control_success, control_total, test_success, test_total)
-print(f"Z-test for proportions: z = {z_score}, p = {p_value}")
-
-# Age Hypothesis Test
-control_age = Clean_Data[Clean_Data['variation'] == 'Control']['clnt_age']
-test_age = Clean_Data[Clean_Data['variation'] == 'Test']['clnt_age']
-t_stat, p_value_age = compute_ttest(control_age, test_age)
-print(f"T-test for age: t = {t_stat}, p = {p_value_age}")
+# Modeling
+train_logistic_regression(df, 'process_step')
