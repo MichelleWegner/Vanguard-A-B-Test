@@ -1,79 +1,44 @@
-# Vanguard A/B Test Analysis
+# Vanguard A/B Test Project
 
-### Project Overview
+## Project Description
+This project analyzes the impact of a new user interface (UI) on completion rates and user experience at Vanguard. An A/B test was conducted to determine whether the new UI leads to higher completion rates and better user interaction.
 
-This project is part of the Module 2 curriculum and aims to analyze the results of an A/B test conducted by Vanguard, a US-based investment management company.
-The goal of the test was to determine if a new, more intuitive User Interface (UI) with contextual prompts improved the user experience and increased completion rates.
+## Data Sources
+- **Client Profiles (df_final_demo):** Demographic data of the clients.
+- **Digital Footprints (df_final_web_data):** Divided into pt_1 and pt_2, these datasets contain the digital traces and activities of the clients.
+- **Experiment Roster (df_final_experiment_clients):** List of clients who participated in the experiment.
 
-### Data Sources
+## Data Cleaning and Preprocessing
+- **Handling Missing Values:** Removal of rows with missing values and duplicates.
+- **Normalization and Encoding:** Standardizing numerical fields and encoding categorical variables.
+- **Merging Datasets:** Combining the various datasets into a consolidated dataset.
 
-The analysis uses three main datasets:
+## Analysis
+1. **Demographic Analysis:** Examination of age distribution, gender distribution, and tenure of clients.
+2. **Behavioral Analysis:** Analysis of login frequency and call frequency.
+3. **Hypothesis Testing:** Examination of completion rates and time spent on each step.
 
-Data Sources: URL: https://github.com/data-bootcamp-v4/lessons/tree/main/5_6_eda_inf_stats_tableau/project/files_for_project
+## Results
+- The new user interface led to a significantly higher completion rate.
+- Improvements in usability and a reduction in error rates were observed.
 
-Client Profiles (df_final_demo): Contains demographic information such as age, gender, and account details.
+## Recommendations
 
-Digital Footprints (df_final_web_data): Details of client interactions online, split into two parts.
+- **Rollout of the New Design:** Implement the new UI across the entire platform.
 
-Experiment Roster (df_final_experiment_clients): Indicates which clients were part of the experiment (Control or Test group).
+- **Continuous Optimization:** Utilize user feedback and further A/B tests to continuously improve the design.
 
-## Methodology
-1. Data Cleaning and Preparation
-Merging datasets based on client IDs.
-Handling missing values and duplicates.
-Ensuring data consistency and integrity.
+- **Targeted Adjustments:** Perform deeper analysis of specific customer segments to identify additional optimization potentials.
 
-### 2. Exploratory Data Analysis (EDA)
-Analysis of client demographics and behaviors.
-Visualization of age distribution, tenure, and activity levels.
+- **Enhanced Customer Support:** Consider providing additional training or support options based on the call frequency analysis.
 
-### 3. Performance Metrics
-Completion Rate: Percentage of users completing the process.
-Time Spent on Each Step: Average time spent on each process step.
-Error Rates: Number of errors or drop-offs during the process.
+## Usage
+- **Main Analysis Notebook:** `Main.ipynb`
+- **Required Data:** `Clean_Data.csv`
 
-### 4. Hypothesis Testing
-Completion Rate: Testing if the new UI leads to higher completion rates.
-Time Spent: Testing if the new UI reduces time spent on each step.
-Error Rates: Testing if the new UI reduces errors.
 
-### 5. Experiment Evaluation
-Assessment of the experiment's design, duration, and data quality.
+## Authors
 
-## Key Findings
-
-The new UI significantly increased the completion rate compared to the old UI.
-
-There was no significant difference in time spent on each step between the two groups.
-
-The new UI reduced error rates, indicating an improvement in user experience.
-
-### Tools and Libraries Used
-
-Python: For data processing and analysis.
-
-Pandas: Data manipulation and cleaning.
-
-Seaborn & Matplotlib: Data visualization.
-
-SciPy: Statistical testing.
-
-Tableau: Interactive visualizations.
-
-### How to Run the Project
-
-Clone the repository: git clone <repository_url>
-
-Navigate to the project directory.
-
-Install required libraries: pip install -r requirements.txt
-
-Run the analysis scripts: python main.py
-
-Conclusion
-The project successfully demonstrated that the new UI design improved the user experience by increasing the completion rate and reducing errors. The analysis provides valuable insights for Vanguard's future UI/UX design decisions.
-
-Authors
 Michelle Wegner & Sulaiman Bah
 
 
