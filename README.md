@@ -42,4 +42,5 @@ This project analyzes the impact of a new user interface (UI) on completion rate
 Michelle Wegner & Sulaiman Bah
 
 
-
+# Presentation :
+https://www.canva.com/design/DAGMsRJKIPM/b2lfiO4DHY2TqfGa_CMQRQ/edit?utm_content=DAGMsRJKIPM&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
